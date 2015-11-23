@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="ThemeHouse_UserBannerGrp" title="[⌂] User Banner Groups" version_string="1.0.0" version_id="1447261019" url="http://xf.themehouse.io/" install_callback_class="ThemeHouse_Install" install_callback_method="install" uninstall_callback_class="ThemeHouse_Install" uninstall_callback_method="uninstall">
+  <admin_navigation>
+    <navigation navigation_id="userBannerGroups" parent_navigation_id="userGroups" display_order="100" link="user-banner-groups" admin_permission_id="userGroup" debug_only="0" hide_no_children="0"/>
+  </admin_navigation>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates>
+    <template title="th_user_banner_group_delete_userbannergroups"><![CDATA[<xen:title>{xen:phrase th_confirm_deletion_of_user_banner_group_userbannergroups}: {$userBannerGroup.title}</xen:title>
+
+<xen:h1>{xen:phrase th_confirm_deletion_of_user_banner_group_userbannergroups}</xen:h1>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:adminlink 'user-banner-groups/edit', $userBannerGroup}">{$userBannerGroup.title}</xen:breadcrumb>
+</xen:navigation>
+
+<xen:require css="delete_confirmation.css" />
+
+<xen:form action="{xen:adminlink 'user-banner-groups/delete', $userBannerGroup}" class="deleteConfirmForm formOverlay">
+	<p>{xen:phrase th_please_confirm_want_to_delete_user_banner_group_userbannergroups}:</p>
+	<strong><a href="{xen:adminlink 'user-banner-groups/edit', $userBannerGroup}">{$userBannerGroup.title}</a></strong>
+
+	<xen:submitunit save="{xen:phrase th_delete_user_banner_group_userbannergroups}" />
+
+	<input type="hidden" name="_xfConfirm" value="1" />
+</xen:form>]]></template>
+    <template title="th_user_banner_group_edit_userbannergroups"><![CDATA[<xen:title>{xen:if '{$userBannerGroup.user_banner_group_id}', '{xen:phrase th_edit_user_banner_group_userbannergroups}: {$userBannerGroup.title}', '{xen:phrase th_create_new_user_banner_group_userbannergroups}'}</xen:title>
+
+<xen:h1>{xen:if '{$userBannerGroup.user_banner_group_id}', '{xen:phrase th_edit_user_banner_group_userbannergroups}: <em>{$userBannerGroup.title}</em>', '{xen:phrase th_create_new_user_banner_group_userbannergroups}'}</xen:h1>
+
+<xen:if is="{$userBannerGroup.user_banner_group_id}">
+	<xen:navigation>
+		<xen:breadcrumb href="{xen:adminlink 'user-banner-groups'}#{xen:helper listitemid, $userBannerGroup.user_banner_group_id}">{$userBannerGroup.title}</xen:breadcrumb>
+	</xen:navigation>
+</xen:if>
+
+<xen:form action="{xen:adminlink 'user-banner-groups/save', $userBannerGroup}" class="AutoValidator" data-redirect="on">
+	<xen:textboxunit label="{xen:phrase title}:" name="title" value="{$userBannerGroup.title}" data-liveTitleTemplate="{xen:if {$userBannerGroup.user_banner_group_id},
+		'{xen:phrase th_edit_user_banner_group_userbannergroups}: <em>%s</em>',
+		'{xen:phrase th_create_new_user_banner_group_userbannergroups}: <em>%s</em>'}" />
+	
+	<xen:spinboxunit label="{xen:phrase display_styling_priority}" name="display_style_priority" value="{$userBannerGroup.display_style_priority}" />
+		
+	<xen:checkboxunit label="">
+		<xen:option label="{xen:phrase allow_banner_stacking}" name="display_multiple" selected="{$userBannerGroup.display_multiple}" />
+	</xen:checkboxunit>
+
+	<xen:textboxunit label="{xen:phrase th_banner_css_class_userbannergroups}" name="banner_css_class" value="{$userBannerGroup.banner_css_class}" />
+		
+	<xen:submitunit>
+		<input type="submit" name="saveexit" value="{xen:phrase save_changes}" accesskey="e" class="button primary" id="saveExitButton" />
+		<xen:if is="{$userBannerGroup.user_banner_group_id}">
+			<input type="button" value="{xen:phrase th_delete_user_banner_group_userbannergroups}..." accesskey="d" class="button OverlayTrigger"
+				data-href="{xen:adminlink user-banner-groups/delete, $userBannerGroup}" />
+		</xen:if>
+	</xen:submitunit>
+</xen:form>]]></template>
+    <template title="th_user_banner_group_list_userbannergroups"><![CDATA[<xen:title>{xen:phrase th_user_banner_groups_userbannergroups}</xen:title>
+
+<xen:h1>{xen:phrase th_user_banner_groups_userbannergroups}</xen:h1>
+
+<xen:topctrl>
+    <a href="{xen:adminlink 'user-banner-groups/add'}" class="button">+ {xen:phrase th_create_new_user_banner_group_userbannergroups}</a>
+</xen:topctrl>
+
+<xen:require css="filter_list.css" />
+<xen:require js="js/xenforo/filter_list.js" />
+
+<xen:form action="{xen:adminlink 'user-banner-groups/toggle'}" class="section AutoValidator">
+
+    <xen:if is="{$userBannerGroups}">
+        <h2 class="subHeading">
+            <xen:include template="filter_list_controls" />
+            {xen:phrase th_user_banner_groups_userbannergroups}
+        </h2>
+
+        <ol class="FilterList">
+            <xen:foreach loop="$userBannerGroups" key="$userBannerGroupId" value="$userBannerGroup">
+                <xen:listitem id="{$userBannerGroupId}"
+                    label="{$userBannerGroup.title}"
+                    snippet=""
+                    href="{xen:adminlink 'user-banner-groups/edit', $userBannerGroup}"
+                    delete="{xen:adminlink 'user-banner-groups/delete', $userBannerGroup}"
+                    deletehint="{xen:phrase delete}">
+                </xen:listitem>
+            </xen:foreach>
+        </ol>
+
+        <p class="sectionFooter">{xen:phrase showing_x_of_y_items, 'count=<span class="FilterListCount">{xen:count $userBannerGroups}</span>', 'total={xen:count $userBannerGroups}'}</p>
+
+    <xen:else />
+        <div class="noResults">{xen:phrase th_there_are_no_user_banner_groups_userbannergroups}</div>
+    </xen:if>
+
+</xen:form>]]></template>
+  </admin_templates>
+  <admin_template_modifications>
+    <modification template="user_group_edit" modification_key="th_userGroupEdit_userBannerGroups" description="Adds user banner group selector to user group editor." execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#<xen:textboxunit.*name="banner_text".*/>#Us]]></find>
+      <replace><![CDATA[${0}
+<xen:selectunit label="{xen:phrase th_user_banner_group_userbannergroups}" name="user_banner_group_id">
+	<xen:option />
+	<xen:foreach loop="$userBannerGroups" key="$userBannerGroupId" value="$userBannerGroup">
+		<xen:option value="{$userBannerGroupId}" label="{$userBannerGroup.title}" selected="{$userGroup.user_banner_group_id_th} == {$userBannerGroupId}" />
+	</xen:foreach>
+</xen:selectunit>
+<input type="hidden" name="user_banner_group_id_shown" value="1" />]]></replace>
+    </modification>
+  </admin_template_modifications>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="ThemeHouse_Listener_ControllerPreDispatch" callback_method="controllerPreDispatch" active="1" hint="" description=""/>
+    <listener event_id="file_health_check" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_FileHealthCheck" callback_method="fileHealthCheck" active="1" hint="" description=""/>
+    <listener event_id="init_dependencies" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_InitDependencies" callback_method="initDependencies" active="1" hint="" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_LoadClass" callback_method="loadClassController" active="0" hint="XenForo_ControllerAdmin_UserGroup" description="XenForo_ControllerAdmin_UserGroup (For XenForo 1.2 and above)" compatibility_switch="1"/>
+    <listener event_id="load_class" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_LoadClass" callback_method="loadClassDataWriter" active="0" hint="XenForo_DataWriter_UserGroup" description="XenForo_DataWriter_UserGroup (For XenForo 1.2 and above)" compatibility_switch="1"/>
+    <listener event_id="load_class" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_LoadClass" callback_method="loadClassModel" active="0" hint="XenForo_Model_UserGroup" description="XenForo_Model_UserGroup (For XenForo 1.2 and above)" compatibility_switch="1"/>
+    <listener event_id="load_class_controller" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_LoadClass" callback_method="loadClassController" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+    <listener event_id="load_class_datawriter" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_LoadClass" callback_method="loadClassDataWriter" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+    <listener event_id="load_class_model" execute_order="10" callback_class="ThemeHouse_UserBannerGrp_Listener_LoadClass" callback_method="loadClassModel" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="admin_navigation_userBannerGroups" version_id="1429020739" version_string="1.0.0"><![CDATA[User Banner Groups]]></phrase>
+    <phrase title="th_banner_css_class_userbannergroups" version_id="1429095757" version_string="1.0.0"><![CDATA[Banner CSS Class]]></phrase>
+    <phrase title="th_confirm_deletion_of_user_banner_group_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[Confirm Deletion of User Banner Group]]></phrase>
+    <phrase title="th_create_new_user_banner_group_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[Create New User Banner Group]]></phrase>
+    <phrase title="th_delete_user_banner_group_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[Delete User Banner Group]]></phrase>
+    <phrase title="th_edit_user_banner_group_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[Edit User Banner Group]]></phrase>
+    <phrase title="th_please_confirm_want_to_delete_user_banner_group_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[Please confirm you want to delete the user banner group]]></phrase>
+    <phrase title="th_there_are_no_user_banner_groups_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[There are no user banner groups.]]></phrase>
+    <phrase title="th_user_banner_groups_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[User Banner Groups]]></phrase>
+    <phrase title="th_user_banner_group_userbannergroups" version_id="1429020739" version_string="1.0.0"><![CDATA[User Banner Group]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="admin">
+      <prefix original_prefix="user-banner-groups" class="ThemeHouse_UserBannerGrp_Route_PrefixAdmin_UserBannerGroups" build_link="data_only"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties/>
+  <templates/>
+  <public_template_modifications>
+    <modification template="footer" modification_key="th_copyrightNotice_userBannerGroups" description="Copyright notice for User Banner Groups by ThemeHouse" execution_order="1" enabled="1" action="callback">
+      <find><![CDATA[/{xen:phrase (?:xenforo|extra)_copyright}/]]></find>
+      <replace><![CDATA[ThemeHouse_Listener_InitDependencies::copyrightNotice]]></replace>
+    </modification>
+    <modification template="footer" modification_key="th_copyrightNotice_userBannerGrp" description="Copyright notice for [⌂] User Banner Groups" execution_order="1" enabled="1" action="callback">
+      <find><![CDATA[/{xen:phrase (?:xenforo|extra)_copyright}/]]></find>
+      <replace><![CDATA[ThemeHouse_Listener_InitDependencies::copyrightNotice]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
